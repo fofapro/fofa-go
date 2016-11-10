@@ -1,0 +1,19 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "u1HISaiS237njXSBBrnPxB/p7IM=",
+			"path": "github.com/DivineRapier/go-tools/log",
+			"revision": "95201e55d57308781f65ea4c1ceca5a4fc0fe09d",
+			"revisionTime": "2016-11-04T08:51:51Z"
+		},
+		{
+			"checksumSHA1": "UaIfY3h+yVesmmrVelu0R5nqTpA=",
+			"path": "github.com/buger/jsonparser",
+			"revision": "f04e003e4115787c6272636780bc206e5ffad6c4",
+			"revisionTime": "2016-09-22T14:59:46Z"
+		}
+	],
+	"rootPath": "fofa"
+}
