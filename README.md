@@ -41,7 +41,7 @@ $ govendor install +local
 ```
 <i>如果是 `*nix` 或者 `mac` 可以使用</i>   
 ``` zsh
-$ make build
+$ make
 $ make install
 ```
 <strong>文档</strong> 
@@ -104,7 +104,7 @@ func FofaExample() {
 在同时满足安装`FOFA SDK`与`$GOPATH/bin`包含在`$PATH`环境变量时，可以直接运行.
 ### USAGE   
 ``` zsh
-$ fofa
+$ fofa-go
 
     Fofa is a tool for discovering assets.
 
