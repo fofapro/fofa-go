@@ -54,7 +54,7 @@ $ make doc
 ```
 <strong>测试</strong>   
 ``` zsh
-$ govendor test  ./sdk
+$ govendor test  ./fofa
 ```
 <i>如果是 `*nix` 或者 `mac` 可以使用</i>   
 ``` zsh
