@@ -3,11 +3,12 @@
 GOPATH := ${GOPATH}
 export GOPATH
 
-default: install
+default: build
 
+build: vet
+	govendor build +local
 install: vet
 	govendor install +local
-
 fmt:
 	go fmt ./...
 
