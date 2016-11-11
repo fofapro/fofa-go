@@ -1,26 +1,15 @@
-// Copyright (c) 2016 baimaohui
-
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-
-// Package fofa implements some fofa-api utility functions.
 package fofa
 
 import (
+	"crypto/tls"
 	"math/rand"
+	"net/http"
 	"os"
+	"reflect"
+	"runtime"
 	"strconv"
 	"testing"
 	"time"
-
-	"runtime"
 
 	"github.com/buger/jsonparser"
 )
@@ -685,4 +674,55 @@ func getQuery(data []byte) []byte {
 func getSize(data []byte) uint {
 	size, _ := jsonparser.GetInt(data, "size")
 	return uint(size)
+}
+
+func TestFofa_UserInfo(t *testing.T) {
+	type fields struct {
+		email  []byte
+		key    []byte
+		Client *http.Client
+	}
+	httpClient := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
+	tests := []struct {
+		name     string
+		fields   fields
+		wantUser *User
+		wantErr  bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test_01",
+			fields: fields{
+				[]byte(os.Getenv("FOFA_EMAIL")),
+				[]byte(os.Getenv("FOFA_KEY")),
+				httpClient,
+			},
+			wantUser: &User{
+				os.Getenv("FOFA_EMAIL"),
+				16749,
+				true,
+				os.Getenv("FOFA_AVATAR"),
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		ff := &Fofa{
+			email:  tt.fields.email,
+			key:    tt.fields.key,
+			Client: tt.fields.Client,
+		}
+		gotUser, err := ff.UserInfo()
+		if (err != nil) != tt.wantErr {
+			t.Errorf("%q. Fofa.UserInfo() error = %v, wantErr %v", tt.name, err, tt.wantErr)
+			continue
+		}
+		if !reflect.DeepEqual(gotUser, tt.wantUser) {
+			t.Errorf("%q. Fofa.UserInfo() = %v, want %v", tt.name, gotUser, tt.wantUser)
+		}
+	}
 }

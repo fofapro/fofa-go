@@ -50,6 +50,16 @@ type result struct {
 	City    string `json:"city"`
 }
 
+// {"email":"fqxyj1993@163.com","fcoin":17130,"isvip":true,"avatar":"https://i.nosec.org/avatar/system/users/avatars/100/000/468/medium/images.jpeg?1478225769"}
+
+// User struct for fofa user
+type User struct {
+	Email  string `json:"email"`
+	Fcoin  int    `json:"fcoin"`
+	Vip    bool   `json:"bool"`
+	Avatar string `json:"avatar"`
+}
+
 // Results fofa result set
 type Results []result
 
@@ -215,4 +225,40 @@ func (ff *Fofa) QueryAsArray(page uint, args ...[]byte) (Results, error) {
 		}
 	}
 	return queryArray, nil
+}
+
+// UserInfo get user information
+func (ff *Fofa) UserInfo() (user *User, err error) {
+	user = new(User)
+	queryStr := strings.Join([]string{"https://fofa.so/api/v1/info/my?email=", string(ff.email), "&key=", string(ff.key)}, "")
+	resp, e := ff.Get(queryStr)
+	if e != nil {
+		user = nil
+		err = e
+	} else {
+		defer resp.Body.Close()
+		body, e := ioutil.ReadAll(resp.Body)
+		if e != nil {
+			err = e
+		} else {
+			errmsg, e := jsonparser.GetString(body, "errmsg")
+			if e == nil {
+				err = errors.New(errmsg)
+			} else {
+				email, err1 := jsonparser.GetString(body, "email")
+				fcoin, err2 := jsonparser.GetInt(body, "fcoin")
+				vip, err3 := jsonparser.GetBoolean(body, "isvip")
+				avatar, err4 := jsonparser.GetString(body, "avatar")
+				if err1 != nil || err2 != nil || err3 != nil || err4 != nil {
+					err = errors.New("illegal format userinfo")
+				} else {
+					user.Avatar = avatar
+					user.Email = email
+					user.Fcoin = int(fcoin)
+					user.Vip = vip
+				}
+			}
+		}
+	}
+	return
 }
