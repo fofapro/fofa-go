@@ -29,7 +29,7 @@ func FofaExample() {
 		fmt.Printf("%v\n", err.Error())
 	}
 	fmt.Printf("%s\n", ret)
-	arr, err := clt.QueryAsArray(1, []byte(`domain="haosec.cn"`), []byte("domain"))
+	arr, err := clt.QueryAsArray(1, []byte(`domain="163.com"`), []byte("ip,host,title"))
 	if err != nil {
 		fmt.Printf("%v\n", err.Error())
 	}
