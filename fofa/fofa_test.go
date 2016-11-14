@@ -48,6 +48,26 @@ func TestNewFofaClient(t *testing.T) {
 	}
 }
 
+func TestNewFofaClientError(t *testing.T) {
+	email := os.Getenv("FOFA_EMAIL")
+	key := os.Getenv("FOFA_KEY")
+
+	clt := NewFofaClient([]byte(email+"0000"), []byte(key))
+	userinfo, err := clt.UserInfo()
+	if err == nil {
+		t.Errorf("%v\n", err.Error())
+	} else if userinfo.Email != "" {
+		t.Errorf("expect userinfo is empty, but %v\n", userinfo)
+	}
+	clt = NewFofaClient([]byte(email), []byte(key+"0000"))
+	userinfo, err = clt.UserInfo()
+	if err == nil {
+		t.Errorf("%v\n", err.Error())
+	} else if userinfo.Email != "" {
+		t.Errorf("expect userinfo is empty, but %v\n", userinfo)
+	}
+}
+
 func TestQueryAsJSON(t *testing.T) {
 	var (
 		arr          = []byte(nil)
