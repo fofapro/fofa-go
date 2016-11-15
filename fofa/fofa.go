@@ -117,7 +117,6 @@ func (ff *Fofa) QueryAsJSON(page uint, args ...[]byte) ([]byte, error) {
 	fmt.Printf("%s\n", q)
 	resp, err := ff.Get(string(q))
 	if err != nil {
-		fmt.Printf("err != nil: %v\n", err != nil)
 		log.Errorf("%v\n", err.Error())
 		return nil, err
 	}
@@ -203,25 +202,39 @@ func (ff *Fofa) QueryAsArray(page uint, args ...[]byte) (Results, error) {
 		tmp := bytes.Split(v, []byte{','})
 
 		if a, ok := mapFields["domain"]; ok {
-			queryArray[i].Domain = string(tmp[a][1 : len(tmp[a])-1])
+			if len(tmp[a]) > 2 {
+				queryArray[i].Domain = string(tmp[a][1 : len(tmp[a])-1])
+			}
 		}
 		if a, ok := mapFields["host"]; ok {
-			queryArray[i].Host = string(tmp[a][1 : len(tmp[a])-1])
+			if len(tmp[a]) > 2 {
+				queryArray[i].Host = string(tmp[a][1 : len(tmp[a])-1])
+			}
 		}
 		if a, ok := mapFields["ip"]; ok {
-			queryArray[i].IP = string(tmp[a][1 : len(tmp[a])-1])
+			if len(tmp[a]) > 2 {
+				queryArray[i].IP = string(tmp[a][1 : len(tmp[a])-1])
+			}
 		}
 		if a, ok := mapFields["port"]; ok {
-			queryArray[i].Port = string(tmp[a][1 : len(tmp[a])-1])
+			if len(tmp[a]) > 2 {
+				queryArray[i].Port = string(tmp[a][1 : len(tmp[a])-1])
+			}
 		}
 		if a, ok := mapFields["title"]; ok {
-			queryArray[i].Title = string(tmp[a][1 : len(tmp[a])-1])
+			if len(tmp[a]) > 2 {
+				queryArray[i].Title = string(tmp[a][1 : len(tmp[a])-1])
+			}
 		}
 		if a, ok := mapFields["country"]; ok {
-			queryArray[i].Country = string(tmp[a][1 : len(tmp[a])-1])
+			if len(tmp[a]) > 2 {
+				queryArray[i].Country = string(tmp[a][1 : len(tmp[a])-1])
+			}
 		}
 		if a, ok := mapFields["city"]; ok {
-			queryArray[i].City = string(tmp[a][1 : len(tmp[a])-1])
+			if len(tmp[a]) > 2 {
+				queryArray[i].City = string(tmp[a][1 : len(tmp[a])-1])
+			}
 		}
 	}
 	return queryArray, nil
