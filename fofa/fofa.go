@@ -41,13 +41,13 @@ type Fofa struct {
 // Result represents a record of the query results
 // contain domain host  ip  port title country city
 type result struct {
-	Domain  string `json:"domain"`
-	Host    string `json:"host"`
-	IP      string `json:"ip"`
-	Port    string `json:"port"`
-	Title   string `json:"title"`
-	Country string `json:"country"`
-	City    string `json:"city"`
+	Domain  string `json:"domain,omitempty"`
+	Host    string `json:"host,omitempty"`
+	IP      string `json:"ip,omitempty"`
+	Port    string `json:"port,omitempty"`
+	Title   string `json:"title,omitempty"`
+	Country string `json:"country,omitempty"`
+	City    string `json:"city,omitempty"`
 }
 
 // {"email":"fqxyj1993@163.com","fcoin":17130,"isvip":true,"avatar":"https://i.nosec.org/avatar/system/users/avatars/100/000/468/medium/images.jpeg?1478225769"}

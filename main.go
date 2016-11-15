@@ -18,11 +18,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 	"strconv"
 	"time"
+
+	"encoding/json"
 
 	"github.com/fofapro/fofa-go/fofa"
 )
@@ -45,7 +46,7 @@ func usage() {
 
             fofa option argument ...
 
-    The commands are:
+    The options are:
 
             email           the email which you login to fofa.so
                             Use FOFA_EMAIL env by default.
@@ -92,16 +93,18 @@ func main() {
 		return
 	}
 
+	*out = *out + ".json"
+
 	var (
-		json  []byte
-		array fofa.Results
-		err   error
+		jsonResult  []byte
+		arrayResult fofa.Results
+		err         error
 	)
 	switch *format {
 	case "json":
-		json, err = clt.QueryAsJSON(uint(*page), []byte(*query), []byte(*fields))
+		jsonResult, err = clt.QueryAsJSON(uint(*page), []byte(*query), []byte(*fields))
 	case "array":
-		array, err = clt.QueryAsArray(uint(*page), []byte(*query), []byte(*fields))
+		arrayResult, err = clt.QueryAsArray(uint(*page), []byte(*query), []byte(*fields))
 	default:
 		_ = fmt.Errorf("Expect json or array as output format.")
 		usage()
@@ -111,35 +114,15 @@ func main() {
 	if err != nil {
 		_ = fmt.Errorf("%v\n", err.Error())
 	}
-	fd, err := os.Create(*out)
-	defer fd.Close()
-	if err != nil {
-		_ = fmt.Errorf("%v\n", err.Error())
-	}
 	switch {
-	case json != nil:
-		ioutil.WriteFile(*out, json, 0666)
-	case array != nil:
-		for _, v := range array {
-			if v.Domain != "" {
-				io.WriteString(fd, "domain: "+v.Domain+"\t")
-			}
-			if v.Host != "" {
-				io.WriteString(fd, "host: "+v.Host+"\t")
-			}
-			if v.IP != "" {
-				io.WriteString(fd, "ip: "+v.IP+"\t")
-			}
-			if v.Port != "" {
-				io.WriteString(fd, "port: "+v.Port+"\t")
-			}
-			if v.Country != "" {
-				io.WriteString(fd, "country: "+v.Country+"\t")
-			}
-			if v.City != "" {
-				io.WriteString(fd, "city: "+v.City)
-			}
-			io.WriteString(fd, "\n")
+	case jsonResult != nil:
+		ioutil.WriteFile(*out, jsonResult, 0666)
+	case arrayResult != nil:
+		marshalResult, err := json.Marshal(arrayResult)
+		if err != nil {
+			fmt.Printf("[Fatal] %s\n", err.Error())
+			return
 		}
+		ioutil.WriteFile(*out, marshalResult, 0666)
 	}
 }
