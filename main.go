@@ -122,22 +122,22 @@ func main() {
 	case array != nil:
 		for _, v := range array {
 			if v.Domain != "" {
-				io.WriteString(fd, "domain "+v.Domain+"\t")
+				io.WriteString(fd, "domain: "+v.Domain+"\t")
 			}
 			if v.Host != "" {
-				io.WriteString(fd, "host "+v.Host+"\t")
+				io.WriteString(fd, "host: "+v.Host+"\t")
 			}
 			if v.IP != "" {
-				io.WriteString(fd, "iP "+v.IP+"\t")
+				io.WriteString(fd, "ip: "+v.IP+"\t")
 			}
 			if v.Port != "" {
-				io.WriteString(fd, "port "+v.Port+"\t")
+				io.WriteString(fd, "port: "+v.Port+"\t")
 			}
 			if v.Country != "" {
-				io.WriteString(fd, "country "+v.Country+"\t")
+				io.WriteString(fd, "country: "+v.Country+"\t")
 			}
 			if v.City != "" {
-				io.WriteString(fd, "city "+v.City)
+				io.WriteString(fd, "city: "+v.City)
 			}
 			io.WriteString(fd, "\n")
 		}
