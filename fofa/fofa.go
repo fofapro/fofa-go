@@ -16,6 +16,7 @@ package fofa
 import (
 	"crypto/tls"
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -49,8 +50,6 @@ type result struct {
 	Country string `json:"country,omitempty"`
 	City    string `json:"city,omitempty"`
 }
-
-// {"email":"fqxyj1993@163.com","fcoin":17130,"isvip":true,"avatar":"https://i.nosec.org/avatar/system/users/avatars/100/000/468/medium/images.jpeg?1478225769"}
 
 // User struct for fofa user
 type User struct {
@@ -274,4 +273,31 @@ func (ff *Fofa) UserInfo() (user *User, err error) {
 		}
 	}
 	return
+}
+
+func (u *User) String() string {
+	data, err := json.Marshal(u)
+	if err != nil {
+		log.Error("json marshal failed. err:", err)
+		return ""
+	}
+	return string(data)
+}
+
+func (r *result) String() string {
+	data, err := json.Marshal(r)
+	if err != nil {
+		log.Error("json marshal failed. err:", err)
+		return ""
+	}
+	return string(data)
+}
+
+func (r *Results) String() string {
+	data, err := json.Marshal(r)
+	if err != nil {
+		log.Error("json marshal failed. err:", err)
+		return ""
+	}
+	return string(data)
 }
