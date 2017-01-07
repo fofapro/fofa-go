@@ -169,7 +169,7 @@ func (ff *Fofa) QueryAsArray(page uint, args ...[]byte) (Results, error) {
 	if err == nil {
 		err = errors.New(errmsg)
 		log.Errorf("err: %v\n", errmsg)
-		return nil, errors.New(errmsg)
+		return nil, err
 	}
 
 	results, dataType, _, err := jsonparser.Get(data, "results")
