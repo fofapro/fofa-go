@@ -19,16 +19,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"io/ioutil"
 	"net/http"
 	"strconv"
-
 	"bytes"
-
-	"github.com/DivineRapier/go-tools/log"
-
 	"strings"
-
 	"github.com/buger/jsonparser"
 )
 
@@ -162,7 +158,7 @@ func (ff *Fofa) QueryAsArray(page uint, args ...[]byte) (result Results, err err
 		return nil, errors.New(errmsg)
 	}
 
-	err = json.Unmarshal(content, result)
+	err = json.Unmarshal(content, &result)
 
 	return
 }
@@ -192,7 +188,7 @@ func (ff *Fofa) UserInfo() (user *User, err error) {
 func (u *User) String() string {
 	data, err := json.Marshal(u)
 	if err != nil {
-		log.Error("json marshal failed. err:", err)
+		log.Fatalf("json marshal failed. err: %s\n", err)
 		return ""
 	}
 	return string(data)
@@ -201,7 +197,7 @@ func (u *User) String() string {
 func (r *result) String() string {
 	data, err := json.Marshal(r)
 	if err != nil {
-		log.Error("json marshal failed. err:", err)
+		log.Fatalf("json marshal failed. err: %s\n", err)
 		return ""
 	}
 	return string(data)
@@ -210,7 +206,7 @@ func (r *result) String() string {
 func (r *Results) String() string {
 	data, err := json.Marshal(r)
 	if err != nil {
-		log.Error("json marshal failed. err:", err)
+		log.Fatalf("json marshal failed. err: %s\n", err)
 		return ""
 	}
 	return string(data)
