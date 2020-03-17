@@ -726,6 +726,7 @@ func TestFofa_UserInfo(t *testing.T) {
 				16749,
 				true,
 				os.Getenv("FOFA_AVATAR"),
+        "test_error",
 			},
 			wantErr: false,
 		},
